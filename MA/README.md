@@ -1,33 +1,60 @@
-# Building
+## Configure Extensions and Deploy
 
-First, we need to build a Machine Agent image with all the necessary plugins.
+### a. Configure Kafka
+Edit the `cm-kafka.yaml` file with the Kafka host and JMX port.
 
-## Building Machine Agent with extensions (Kafka/Redis)
+```bash
+    # Add your Kafka Instances below
+    servers:
+      - host: "broker-svc.payments.svc.cluster.local"
+        port: "5555"
+        username: ""
+        password: ""
+        encryptedPassword:
+        displayName: 'xxx'
+```
 
-1. **Download the Kafka Monitoring Extension**  
-   - Get the `kafka-monitoring-extension.jar` file from the [releases](https://github.com/Appdynamics/kafka-monitoring-extension/releases)  
-   - Or build it yourself from this [repository](https://github.com/Appdynamics/kafka-monitoring-extension).
+### b. Configure Redis
+Edit the `cm-redis.yaml` file with the Redis connection details.
 
-2. **Download the Redis Monitoring Extension**  
-   - Get the `redis-monitoring-extension.jar` file from the [releases](https://github.com/Appdynamics/redis-monitoring-extension/releases)  
-   - Or build it yourself from this [repository](https://github.com/Appdynamics/redis-monitoring-extension).
+```bash
+    #Add your list of Redis servers here.
+    servers:
+      - name: "Server1"
+        host: "redis-svc.redis.svc.cluster.local"
+        port: "6379"
+        password: ""
+        encryptedPassword: ""
+        useSSL: false
+```
 
-3. **Place the JAR Files**  
-   - Move the `kafka-monitoring-extension.jar` file into the `KafkaMonitor` folder.
-   - Move the `redis-monitoring-extension.jar` file into the `RedisMonitor` folder.
+### c. Configure AppDynamics
+Edit the `dp-ma.yaml` file with the connection information for the AppDynamics instance.
 
-3. **Build the Docker Image**  
-   - Run the `build.sh` script:  
-     ```sh
-     ./build.sh
-     ```
+```bash
+        env:
+        - name: APPDYNAMICS_CONTROLLER_HOST_NAME
+          value: ""
+        - name: APPDYNAMICS_CONTROLLER_PORT
+          value: "443"
+        - name: APPDYNAMICS_CONTROLLER_SSL_ENABLED
+          value: "true"
+        - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+          value: ""
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+          value: ""
+        - name: APPDYNAMICS_AGENT_UNIQUE_HOST_ID
+          value: ""
+        - name: APPDYNAMICS_SIM_ENABLED
+          value: "true"  
+```
 
-4. **Push the Image to Your Repository**  
-   - Execute the `push.sh` script:  
-     ```sh
-     ./push.sh
-     ```
+### d. Deploy
+Run the following commands:
 
-Now your Docker image is ready for deployment!
-
-# Running
+```bash
+kubectl apply -f cm-kafka.yaml
+kubectl apply -f cm-redis.yaml
+kubectl apply -f cm-log4j.yaml
+kubectl apply -f dp-ma.yaml
+```
