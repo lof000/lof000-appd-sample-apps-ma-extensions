@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: machine-agent
+  name: machine-agent
+  namespace: appd  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: machine-agent
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: machine-agent
+    spec:
+      containers:
+      - image: leandrovo/ma-plugins:2.0       #if you built another image, change name:tag here
+        name: ma-plugins
+        imagePullPolicy: Always
+        resources: {}
+        env:
+        - name: APPDYNAMICS_CONTROLLER_HOST_NAME
+          value: ""
+        - name: APPDYNAMICS_CONTROLLER_PORT
+          value: "443"
+        - name: APPDYNAMICS_CONTROLLER_SSL_ENABLED
+          value: "true"
+        - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+          value: ""
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+          value: ""
+        - name: APPDYNAMICS_AGENT_UNIQUE_HOST_ID
+          value: ""
+        - name: APPDYNAMICS_SIM_ENABLED
+          value: "true"          
+
+        volumeMounts:
+        - name: config-volume
+          mountPath: /opt/appdynamics/monitors/pluginconfig
+        - name: rds-volume
+          mountPath: /opt/appdynamics/monitors/pluginconfigredis          
+        - name: log-config-volume
+          mountPath: /opt/appdynamics/conf/logging    
+      volumes:
+      - name: config-volume
+        configMap:
+          name: my-config
+      - name: rds-volume
+        configMap:
+          name: redis-config         
+      - name: log-config-volume
+        configMap:
+          name: log-config         
+
+
+status: {}

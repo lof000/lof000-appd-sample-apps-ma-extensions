@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright 2013. AppDynamics LLC and its affiliates.
+  ~  * All Rights Reserved.
+  ~  * This is unpublished proprietary source code of AppDynamics LLC and its affiliates.
+  ~  * The copyright notice above does not evidence any actual or intended publication of such source code.
+  -->
+
+<monitor>
+    <name>RedisMonitor</name>
+    <type>managed</type>
+    <enabled>true</enabled>
+    <description>Monitors a Redis key-value-store server.</description>
+    <monitor-configuration>
+    </monitor-configuration>
+    <monitor-run-task>
+        <name>RedisMonitor Run Task</name>
+        <display-name>RedisMonitor Run Task</display-name>
+        <description>RedisMonitor Run Task</description>
+        <type>java</type>
+        <execution-style>periodic</execution-style>
+        <execution-frequency-in-seconds>60</execution-frequency-in-seconds>
+        <execution-timeout-in-secs>60</execution-timeout-in-secs>
+        <task-arguments>
+            <!-- config file-->
+            <argument name="config-file" is-required="true" default-value="monitors/pluginconfigredis/redisconfig.yml" />            
+        </task-arguments>
+        <java-task>
+            <classpath>redis-monitoring-extension.jar</classpath>
+            <impl-class>com.appdynamics.extensions.redis.RedisMonitor</impl-class>
+        </java-task>
+    </monitor-run-task>
+</monitor>
