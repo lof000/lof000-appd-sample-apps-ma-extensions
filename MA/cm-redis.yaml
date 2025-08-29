@@ -11,10 +11,12 @@ data:
     #metricPrefix: "Server|Component:<TIER NAME OR TIER ID>|Custom Metrics|Redis"
 
     #Add your list of Redis servers here.
+    ## example redis-svc.redis.svc.cluster.local"
+    ## 6379
     servers:
       - name: "Server1"
-        host: "redis-svc.redis.svc.cluster.local"
-        port: "6379"
+        host: "<<<redis-service-endpoint>>"
+        port: "<<redis-port>>"
         #password: ""
         #encryptedPassword: ""
         useSSL: false
