@@ -19,7 +19,7 @@ spec:
         app: machine-agent-redis
     spec:
       containers:
-      - image: leandrovo/ma-plugins-redis:1.0       #if you built another image, change name:tag here
+      - image: leandrovo/ma-plugins-redis:2.0       #if you built another image, change name:tag here
         name: ma-plugins-redis
         imagePullPolicy: Always
         resources: {}
@@ -42,15 +42,15 @@ spec:
         volumeMounts:
         - name: rds-volume
           mountPath: /opt/appdynamics/monitors/pluginconfigredis          
-        - name: log-config-volume
-          mountPath: /opt/appdynamics/conf/logging    
+#        - name: log-config-volume
+#          mountPath: /opt/appdynamics/conf/logging    
       volumes:
       - name: rds-volume
         configMap:
           name: redis-config         
-      - name: log-config-volume
-        configMap:
-          name: log-config         
+#      - name: log-config-volume
+#        configMap:
+#          name: log-config         
 
 
 status: {}

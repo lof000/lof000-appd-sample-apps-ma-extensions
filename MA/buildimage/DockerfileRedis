@@ -5,5 +5,7 @@ FROM appdynamics/machine-agent:latest
 
 COPY RedisMonitor/ /opt/appdynamics/monitors/RedisMonitor
 
+COPY log4j.xml /opt/appdynamics/conf/logging/log4j.xml
+
 # Command to keep the container running (optional)
 #CMD ["bash"]
